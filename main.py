@@ -27,14 +27,6 @@ from global_utils import is_development_env
 from config import CONFIG
 
 
-# class MainHandler(BaseHandler):
-#     def get(self):
-
-#         template_values = {}
-#         path = os.path.join(os.path.dirname(__file__), 'template/home.html')
-#         self.response.write(template.render(path, template_values))
-
-
 
 class SignupHandler(BaseHandler):
     def get(self):
@@ -156,6 +148,7 @@ class SignupHandler(BaseHandler):
 
 
 class SigninHandler(BaseHandler):
+    @log_optional_params("continue")
     def get(self):
         login_qs = self.request.get("login", "")
         login_status = ""
@@ -166,7 +159,6 @@ class SigninHandler(BaseHandler):
             "continue_path": self.request.get("continue", ""),
             "login_status": login_status
         }
-        logging.info(self.request.get("continue"))
         path = os.path.join(os.path.dirname(__file__), 'template/signin.html')
         self.response.write(template.render(path, template_values))
 
@@ -179,8 +171,6 @@ class SigninHandler(BaseHandler):
 
         #sign in with email + password
         password_hash = hashlib.sha512(password).hexdigest()
-
-        # query user record with email
 
         # verify with password hash
         db = init_db()
@@ -199,7 +189,6 @@ class SigninHandler(BaseHandler):
 
         data = cursor.fetchone()
         if data:
-            # user_id = data[0]
             username = data[2]
 
             do_login(self, username)
@@ -249,7 +238,7 @@ class NotFoundPageHandler(BaseHandler):
 
 
 app = webapp2.WSGIApplication([
-    # ('/', MainHandler),
+
     ('/signup', SignupHandler),
     ('/signin', SigninHandler),
     ('/logout', LogoutHandler),
