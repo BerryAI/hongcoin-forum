@@ -1,0 +1,114 @@
+
+{% extends "site_template.html" %}
+
+
+{% block body_content %}
+
+<style type="text/css">
+
+.headline_subtitle{font-size: 0.6em;}
+.signin_form_outer{text-align: center; min-height: 470px;padding-top:30px;}
+#signin_form{margin:20px auto;text-align:left;max-width:560px;border-bottom: 1px solid #eee;}
+#signin_form .title{font-weight: bold;font-size: 1.1em;margin-top: 14px;}
+#signin_form .description{font-size: 0.8em;color:#666;}
+#signin_form .input-field{margin-top: 0;}
+#signin_form div.error{font-size: 0.9em;color:#d33;}
+
+#signin_form input[type=text], #signin_form input[type=password], #signin_form input[type=email], #signin_form input[type=url], #signin_form input[type=time], #signin_form input[type=date], #signin_form input[type=datetime-local], #signin_form input[type=tel], #signin_form input[type=number], #signin_form input[type=search], #signin_form textarea.materialize-textarea{
+    margin:0;
+}
+#signin_form input+div{margin:4px 0;}
+#signin_form .form_button{margin:8px 0;}
+
+.status_msg{margin:auto;display: inline-block;padding: 6px 20px;}
+.error{color:#b00;background-color: #fff5f5;}
+</style>
+
+<div class="page_headline_bar">
+    <div class="container">
+        <div>
+            Sign In
+        </div>
+
+    </div>
+</div>
+
+<div class="container signin_form_outer">
+
+    {{ login_status|safe }}
+
+    <form id="signin_form" method="POST">
+
+        <input name="continue_path" value="{{ continue_path }}" type="hidden" />
+
+        <div class="question">
+            <div class="title">Email address</div>
+            <div class="fillin_value input-field">
+                <input id="signup_email_address_input" name="email_input" type="email">
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="title">Password</div>
+            <div class="fillin_value input-field">
+                <input id="signup_password_input" name="password" type="password">
+            </div>
+        </div>
+
+        <div class="form_button">
+            <button class="waves-effect waves-light btn orange accent-3 signup_button submit" type="submit" >Sign In</button>
+        </div>
+
+    </form>
+
+    <div>New user? <a href="/signup">Sign up here</a></div>
+    <div>Forgot password? <a href="mailto:hongcoin@berry.ai">Drop us an email for password reset request</a></div>
+</div>
+
+{% endblock %}
+
+
+
+{% block body_footerscript_content %}
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+
+var exclamation = "<i class='fa fa-exclamation-triangle'></i> ";
+
+$("#signin_form").validate({
+    rules: {
+        email_input: {
+            required: true,
+            email: true
+        },
+        password: {
+            required: true,
+            minlength: 6
+        }
+    },
+    //For custom messages
+    messages: {
+        email_input: {
+            required: "Your Email address is missing",
+            email: "Please enter a valid email address"
+        }
+    },
+    errorElement : 'div',
+    errorPlacement: function(error, element) {
+        var placement = $(element).data('error');
+        error.prepend(exclamation);
+        if (placement) {
+            $(placement).append(error);
+        } else {
+            error.insertAfter(element);
+        }
+    }
+});
+
+</script>
+
+
+{% endblock %}
+

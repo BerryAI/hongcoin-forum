@@ -1,0 +1,49 @@
+
+# Copy this file to config.py and edit the values based on your database configuration
+
+import os
+import logging
+
+API_SERVER_HOSTNAME = ""  # SERVER_IP_ADDRESS OR SERVER_HOSTNAME
+RECAPTCHA_SECRET = ""
+RECAPTCHA_VERIFY_HOST = ""
+
+CONFIG = {}
+CONFIG['webapp2_extras.sessions'] = {
+    'secret_key': 'my-super-secret-key',
+}
+
+MYSQL_DB_CONFIG_APP_ENGINE = {
+    'unix_socket': '',
+    'unix_user': 'root',
+    'unix_password': None,
+    'host': '127.0.0.1',
+    'port': 3306,
+    'user': 'root',
+    'password': '',
+    'database': 'hongcoin',
+    'charset': 'utf8',
+}
+
+MYSQL_DB_CONFIG_LOCALHOST = {
+    'unix_socket': '',
+    'unix_user': 'root',
+    'unix_password': None,
+    'host': '127.0.0.1',
+    'port': 3306,
+    'user': 'root',
+    'password': '',
+    'database': 'hongcoin',
+    'charset': 'utf8',
+}
+
+
+
+if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
+    _db_config = MYSQL_DB_CONFIG_APP_ENGINE
+    if os.environ["APPLICATION_ID"] == "s~hongcoin-th-dev":
+        logging.info("Using localhost config")
+        _db_config = MYSQL_DB_CONFIG_LOCALHOST
+
+else:
+    _db_config = MYSQL_DB_CONFIG_LOCALHOST

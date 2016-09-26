@@ -1,0 +1,223 @@
+
+{% extends "site_template.html" %}
+
+
+
+
+{% block body_content %}
+
+<style type="text/css">
+</style>
+
+
+<div class="container discussion_page">
+
+    <div style="text-align:center;">
+
+        <div style="height:30px;">
+        </div>
+
+        <div>
+
+
+
+
+
+
+<!--
+<div class="category-list item-list voting-list">
+    <div class="panel panel-default list-panel">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                For voting
+            </div>
+        </div>
+
+        <ul class="list-group">
+            <li class="list-group-item row clearfix">
+                <div class="col m9 s12 category-intro">
+                    <div class="circle-icon pull-left" style="background-color: #cf3a3a; color: #fff;">
+                        <i class="fa fa-fw fa-sticky-note"></i>
+                    </div>
+
+                    <h2 class="category-title item-title">
+                        <a href="/vote/1">
+                            Kickoff the first fiscal year
+                        </a>
+                    </h2>
+
+                    <span class="text-muted category-description item-description">
+                        Kickoff the first fiscal year
+                    </span>
+                </div>
+
+                <div class="col m1 hidden-sm hidden-xs text-center category-topic-count">
+                    <span class="lead">
+                        99%
+                    </span>
+                    <br>
+                    <span class="text-muted">
+                        YES
+                    </span>
+                </div>
+
+                <div class="col m1 hidden-sm hidden-xs text-center category-post-count">
+                    <span class="lead">
+                        1%
+                    </span>
+                    <br>
+                    <span class="text-muted">
+                        NO
+                    </span>
+                </div>
+
+                <div class="col m1 hidden-sm hidden-xs text-center category-post-count">
+                    <span class="lead">
+                        60%
+                    </span>
+                    <br>
+                    <span class="text-muted">
+                        VOTED
+                    </span>
+                </div>
+
+            </li>
+            <li class="list-group-item row clearfix">
+                <div class="col m9 s12 category-intro">
+                    <div class="circle-icon pull-left" style="background-color: #2c59eb; color: #fff;">
+                        <i class="fa fa-fw fa-sticky-note"></i>
+                    </div>
+
+                    <h2 class="category-title item-title">
+                        <a href="/vote/2">
+                            Name of the second proposal
+                        </a>
+                    </h2>
+
+                    <span class="text-muted category-description item-description">
+                        Description of the second proposal
+                    </span>
+                </div>
+
+                <div class="col m1 hidden-sm hidden-xs text-center category-topic-count">
+                    <span class="lead">
+                        98 %
+                    </span>
+                    <br>
+                    <span class="text-muted">
+                        YES
+                    </span>
+                </div>
+
+                <div class="col m1 hidden-sm hidden-xs text-center category-post-count">
+                    <span class="lead">
+                        2 %
+                    </span>
+                    <br>
+                    <span class="text-muted">
+                        NO
+                    </span>
+                </div>
+
+                <div class="col m1 hidden-sm hidden-xs text-center category-post-count">
+                    <span class="lead">
+                        24 %
+                    </span>
+                    <br>
+                    <span class="text-muted">
+                        VOTED
+                    </span>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+
+</div>
+-->
+
+
+<div class="category-list item-list">
+    <div class="panel panel-default list-panel">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                All Categories
+            </div>
+        </div>
+
+        <ul class="list-group">
+            {% for category in forum_category_result %}
+            <li class="list-group-item row clearfix">
+                <div class="col m7 category-intro">
+                    <div class="circle-icon pull-left" style="color: #fff;background-color: {{ category.icon_color }}; ">
+                        <i class="fa {{ category.fa_icon }}"></i>
+                    </div>
+                    <div class="category-title item-title">
+                        <a href="/discussion/{{ category.slug }}/">
+                            {{ category.name }}
+                        </a>
+                    </div>
+                    <span class="text-muted category-description item-description">
+                        {{ category.desc }}
+                    </span>
+                </div>
+                <div class="col m1 hidden-sm hidden-xs text-center category-topic-count">
+                    <span class="lead">
+                        {{ category.thread_count }}
+                    </span>
+                    <br>
+                    <span class="text-muted">
+                        TOPIC{{ category.thread_count|pluralize:"S" }}
+                    </span>
+                </div>
+
+                <div class="col m1 hidden-sm hidden-xs text-center category-post-count">
+                    <span class="lead">
+                        {{ category.post_count }}
+                    </span>
+                    <br>
+                    <span class="text-muted">
+                        POST{{ category.post_count|pluralize:"S" }}
+                    </span>
+                </div>
+
+                {% if category.datetime_short_formatted == "" %}
+
+                {% else %}
+                <div class="col m3 category-last-post">
+                    {% comment %}<a class="last-post-author" href="/profile/{{ category.username }}">{% endcomment %}
+                        <strong>{{ category.username }}</strong>
+                    {% comment %}</a>{% endcomment %}
+                    posted on <span class="last-post-time">{{ category.datetime_short_formatted }}</span> to
+                    <br>
+                    <span class="last-post-title">
+                        {{ category.latest_post_title }}
+                    </span>
+                </div>
+                {% endif %}
+
+            </li>
+            {% endfor %}
+        </ul>
+
+
+    </div>
+
+<!-- http://natika.windwalker.io/ -->
+
+</div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block body_footerscript_content %}
+
+
+{% endblock %}
+

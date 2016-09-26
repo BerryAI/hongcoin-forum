@@ -1,0 +1,231 @@
+
+{% extends "site_template.html" %}
+
+
+
+
+{% block body_content %}
+
+<style type="text/css">
+
+</style>
+
+
+<div class="container discussion_page">
+    <div class="link_navigation">
+        <a href="/discussion/">All Categories</a> / <a href="/discussion/{{ category.category_slug }}/">{{ category.name }}</a>
+    </div>
+
+    <div style="text-align:center;">
+
+        <div class="thread_category_title">
+
+            <div class="thread_category_title_text pull-left">
+            {% if thread.is_pinned %}
+            <div class="pull-left pin_div" title="Pinned">
+                <i class="fa fa-thumb-tack fa-rotate-90"></i>
+            </div>
+            {%endif%}
+            {{ thread.title }}
+            </div>
+
+        </div>
+        <div>
+
+
+<div class="category-list item-list">
+    <div class="panel panel-default list-panel">
+
+
+
+        {% for post in posts %}
+
+
+        <div class="topic-post-wrap left-line">
+            <article class="topic-post row clearfix">
+
+                <div class="col m1 post-avatar">
+                    <img class="post-img circle-icon icon-large" src="/images/avator.png" style="position: relative;border: 1px solid rgba(0,0,0,.1)">
+                </div>
+
+                <div class="col m11 post-block">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading clearfix">
+                            <div class="pull-left post-author">
+                                <span class="text-muted">{{ post.author_username }}</span>
+                            </div>
+                            <div class="pull-right post-created">
+                                <span id="reply-{{ post.id }}" class="fixed-anchor"></span>
+                                <a href="#reply-{{ post.id }}" class="text-muted">
+                                    {{ post.datetime_formatted }} +00:00
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel-body markdown-body post-body">
+                        {{ post.content_html|safe }}
+                        </div>
+
+                    </div>
+                </div>
+
+            </article>
+        </div>
+
+        {% endfor %}
+
+        {% if not is_logged_in %}
+        <div class="reply-block row clearfix">
+
+            <a class="btn thread_action_btn thread_login_button" href="{{ signin_path }}">
+                Login to reply
+            </a>
+        </div>
+
+        {% else %}
+        <div class="reply-block row clearfix">
+
+            <a class="btn thread_action_btn thread_open_reply_input_button" >
+                Reply to this thread
+            </a>
+        </div>
+        {% endif %}
+
+
+        <div class="topic-post-wrap left-line reply_in_post">
+            <article class="topic-post row clearfix">
+            <form method="POST" action="/api/discussion/{{ category.category_slug }}/{{ thread.id }}">
+
+                <div class="col m1">
+                </div>
+                <div class="col m11 post-block">
+                    <div class="panel panel-primary markdown-body">
+                        <textarea id="md_editor" name="content" data-provide="markdown" data-iconlibrary="fa"></textarea>
+                    </div>
+
+                    <div>
+                        <a class="btn thread_action_btn thread_reply_button" >
+                            Post reply
+                        </a>
+                        <a class="btn thread_action_btn thread_discard_btn" >
+                            <span class="fa fa-trash-o"></span> Discard
+                        </a>
+                    </div>
+                </div>
+
+            </form>
+            </article>
+
+        </div>
+
+<!--
+        <div style="height:60px;"></div>
+
+
+        <div class="topic-post-wrap left-line">
+            <article class="topic-post row clearfix">
+
+                <div class="col m1 post-avatar">
+                    <img class="post-img circle-icon icon-large" src="/images/avator.png" style="position: relative;border: 1px solid rgba(0,0,0,.1)">
+                </div>
+
+                <div class="col m11 post-block">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading clearfix">
+                            <div class="pull-left post-author">
+                                <span class="text-muted">Unknown User</span>
+                            </div>
+                            <div class="pull-right post-created">
+                                <span id="reply-1" class="fixed-anchor"></span>
+                                <a href="#reply-1" class="text-muted">
+                                    Thursday, 01 October 2015
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel-body markdown-body post-body">
+                            <h1>Windwalker DataMapper</h1>
+                            <h2>Installation via Composer</h2>
+<h3>Prepare Windwalker Database object</h3>
+<pre><code class="language-php">use Windwalker\Database\DatabaseFactory;
+
+// Make the database driver.
+$db = DatabaseFactory::getDbo(
+    'mysql',
+    array(
+        'driver'   =&gt; 'mysql',
+        'host'     =&gt; 'localhost',
+        'user'     =&gt; 'root',
+        'password' =&gt; 'xxxx',
+        'database' =&gt; 'mydb',
+        'prefix'   =&gt; 'prefix_'
+    )
+);</code></pre>
+<p>The DatabaseDriver will be cache in Factory, now DataMapper will auto load Windwalker DatabaseDriver
+from <code>DatabaseFactory</code> and <code>DatabaseAdapter</code> to operate DB.</p>
+<h4>Current Supported Drivers</h4>
+<h5>Current Supported Drivers</h5>
+<h6>Current Supported Drivers</h6>
+<ul>
+<li>mysql</li>
+<li>postgresql</li>
+</ul>
+<p>Todo:</p>
+<ul>
+<li>oracle</li>
+<li>mssql</li>
+<li>sqlite</li>
+</ul>
+                        </div>
+
+                    </div>
+                </div>
+
+            </article>
+        </div>
+-->
+
+
+    </div>
+
+</div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block body_footerscript_content %}
+
+<script type="text/javascript">
+
+$(".thread_open_reply_input_button").click(function(){
+
+    // show reply box
+    $(".reply_in_post").slideDown();
+    $(this).addClass("disabled");
+
+});
+
+$(".thread_reply_button").click(function(){
+
+    $("form").submit();
+
+});
+
+$(".thread_discard_btn").click(function(){
+
+    // show reply box
+    $(".thread_open_reply_input_button").removeClass("disabled");
+    $(".reply_in_post").slideUp();
+
+});
+
+
+
+</script>
+
+{% endblock %}
+

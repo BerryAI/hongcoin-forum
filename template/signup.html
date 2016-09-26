@@ -1,0 +1,170 @@
+
+{% extends "site_template.html" %}
+
+
+{% block head_content %}
+<script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}
+
+
+{% block body_content %}
+
+<style type="text/css">
+
+.headline_subtitle{font-size: 0.6em;}
+.signup_form_outer{text-align: center;}
+#signup_form{margin:20px auto;text-align:left;max-width:560px;}
+#signup_form .title{font-weight: bold;font-size: 1.1em;margin-top: 14px;}
+#signup_form .description{font-size: 0.8em;color:#666;}
+#signup_form .input-field{margin-top: 0;}
+#signup_form div.error{font-size: 0.9em;color:#d33;}
+
+#signup_form input[type=text], #signup_form input[type=password], #signup_form input[type=email], #signup_form input[type=url], #signup_form input[type=time], #signup_form input[type=date], #signup_form input[type=datetime-local], #signup_form input[type=tel], #signup_form input[type=number], #signup_form input[type=search], #signup_form textarea.materialize-textarea{
+    margin:0;
+}
+#signup_form input+div{margin:4px 0;}
+#signup_form .form_button{margin:8px 0;}
+
+</style>
+
+<div class="page_headline_bar">
+    <div class="container">
+        <div>
+            Sign Up
+        </div>
+
+    </div>
+</div>
+
+<div class="container signup_form_outer">
+    <form id="signup_form" method="POST">
+
+        {% if error_message != "" %}
+        <div class="error_message"><div class="error_message_inner">{{ error_message|safe }}</div></div>
+        {% else %}
+        <div style="text-align:center;background-color:#ffffdf;padding:4px;">Returning user? <a href="/signin">Sign in here</a></div>
+        {% endif %}
+
+        <div class="question">
+            <div class="title">What is your Ethereum Wallet address?</div>
+            <div class="description">To sign up, you will need to start with purchasing some HONG Tokens.</div>
+            <div class="fillin_value input-field">
+                <input id="signup_ethereum_address_input" name="ethereum_address" type="text" value="{{ form_wallet }}" />
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="title">Email address</div>
+            <div class="description">You will need to use this when you login</div>
+            <div class="fillin_value input-field">
+                <input id="signup_email_address_input" name="email_input" type="email" value="{{ form_email }}" />
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="title">Username</div>
+            <div class="description">This will be displayed to public when you vote or discuss in our platform. You cannot change this once set.</div>
+            <div class="fillin_value input-field">
+                <input id="signup_username_input" type="text" name="username" value="{{ form_username }}" />
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="title">Password</div>
+            <div class="fillin_value input-field">
+                <input id="signup_password_input" name="password" type="password">
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="title">Repeat password</div>
+            <div class="fillin_value input-field">
+                <input id="signup_password_repeat_input" name="cpassword" type="password">
+            </div>
+        </div>
+
+        <div class="question">
+            <div class="title">Are you a robot?</div>
+            <div class="description">Though our fund is managed by Man + Machine, we still need to make sure you are a man, but not a machine.</div>
+            <div class="fillin_value input-field">
+                <div class="g-recaptcha" data-sitekey="6LcxKSkTAAAAABwDerXwc-xTTPxnN4T6VFlZ-Ked"></div>
+            </div>
+        </div>
+
+        <div class="form_button">
+            <button class="waves-effect waves-light btn orange accent-3 signup_button submit" type="submit" >Sign Up</button>
+            <div class="description" style="margin:4px 0">by clicking "Sign Up", you agree with the Terms and Conditions of HONG</div>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
+
+
+
+{% block body_footerscript_content %}
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+
+var exclamation = "<i class='fa fa-exclamation-triangle'></i> ";
+
+$("#signup_form").validate({
+    rules: {
+        ethereum_address: {
+            required: true,
+            minlength: 42,
+            maxlength: 42
+        },
+        email_input: {
+            required: true,
+            email: true
+        },
+        username: {
+            required: true,
+            minlength: 5
+        },
+        password: {
+            required: true,
+            minlength: 6
+        },
+        cpassword: {
+            required: true,
+            minlength: 6,
+            equalTo: "#signup_password_input"
+        }
+    },
+    //For custom messages
+    messages: {
+        ethereum_address:{
+            required: "Your Ethereum address is missing",
+            minlength: "Invalid wallet address",
+            maxlength: "Invalid wallet address"
+        },
+        username: {
+            required: "Your username is missing"
+        },
+        email_input: {
+            required: "Your Email address is missing",
+            email: "Please enter a valid email address"
+        }
+    },
+    errorElement : 'div',
+    errorPlacement: function(error, element) {
+        var placement = $(element).data('error');
+        error.prepend(exclamation);
+        if (placement) {
+            $(placement).append(error);
+        } else {
+            error.insertAfter(element);
+        }
+    }
+});
+
+</script>
+
+
+{% endblock %}
+

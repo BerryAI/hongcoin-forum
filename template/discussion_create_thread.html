@@ -1,0 +1,114 @@
+
+{% extends "site_template.html" %}
+
+
+
+
+{% block body_content %}
+
+<style type="text/css">
+
+</style>
+
+
+<div class="container discussion_page">
+    <div class="link_navigation">
+        <a href="/discussion/">All Categories</a> / <a href="/discussion/{{ category.category_slug }}/">{{ category.name }}</a>
+    </div>
+
+    <div style="text-align:center;">
+
+        <div class="thread_category_title">
+
+            <div class="circle-icon pull-left" style="color: #fff;background-color: #c98732;padding: 15px 17px;">
+                <i class="fa fa-pencil-square-o"></i>
+            </div>
+            <div class="thread_category_title_text pull-left">Create thread</div>
+        </div>
+
+
+        <div class="category-list item-list">
+            <div class="panel panel-default list-panel">
+
+
+
+                <div class="topic-post-wrap left-line">
+                    <form method="POST" action="/api/discussion/{{ category.category_slug }}/new">
+                    <article class="topic-post row clearfix">
+
+                        <div class="col m1">
+                        </div>
+                        <div class="col m11 post-block">
+                            <div class="create_form_attr_title">Thread title</div>
+                            <div>
+                                <input type="text" name="title" />
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                    <article class="topic-post row clearfix">
+
+                        <div class="col m1">
+                        </div>
+                        <div class="col m11 post-block">
+                            <div class="create_form_attr_title">Content</div>
+                            <div class="panel panel-primary markdown-body">
+                                <textarea id="md_editor" name="content" data-provide="markdown" data-iconlibrary="fa"></textarea>
+                            </div>
+
+                            <div>
+                                <a class="btn thread_action_btn post_thread_button" >
+                                    Post new thread
+                                </a>
+                                <a class="btn thread_action_btn thread_discard_btn" >
+                                    <span class="fa fa-trash-o"></span> Discard
+                                </a>
+                            </div>
+                        </div>
+
+                    </article>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block body_footerscript_content %}
+
+<script type="text/javascript">
+
+
+$(".post_thread_button").click(function(){
+
+    $("form").submit();
+
+});
+
+$(".thread_discard_btn").click(function(){
+
+    var c = confirm("Are you sure to discard? The content will be removed.");
+
+    if(c){
+        // back to list of threads under the same category
+        location.href = "./";
+    }
+
+});
+
+
+
+</script>
+
+{% endblock %}
+

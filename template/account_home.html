@@ -1,0 +1,170 @@
+
+{% extends "site_template.html" %}
+
+
+
+
+{% block body_content %}
+
+<style type="text/css">
+.settings_content_block{}
+.button-disabled{opacity: 0.6;}
+</style>
+
+
+<div class="page_headline_bar">
+    <div class="container">
+        <div>
+            My Account
+        </div>
+
+    </div>
+</div>
+
+
+<div id="edit_email" class="modal">
+    <div class="modal-content">
+        <div class="info_title">Please enter your updated email address</div>
+        <div class="input-field">
+            <input id="email_address_input" type="email" class="validate">
+            <label for="email_address_input">New Email Address</label>
+        </div>
+
+        <a class="waves-effect waves-light btn orange accent-3 save_email_address" >Save Email address</a>
+
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>
+
+
+<div class="container discussion_page">
+    <div style="text-align:center;">
+
+        <div>{{ hongcoin_update_status|safe }}</div>
+
+        <div class="row settings_panel">
+            <div class="col l6 m12">
+                <h3>Account Details</h3>
+                <div class="settings_content_block">
+                    <div class="settings_content_block_inner">
+
+                        <div>Basic</div>
+
+                        <div class="entry input">
+                            <div class="title">Username</div>
+                            <div class="edit disabled edit_username"><i class="fa fa-pencil"></i></div>
+                            <div class="value">{{ username }}</div>
+                        </div>
+                        <div class="entry input">
+                            <div class="title">Email</div>
+                            <div class="edit edit_email" href="#edit_email"><i class="fa fa-pencil"></i></div>
+                            <div class="value">{{ email_address }}</div>
+                        </div>
+
+                        <div class="separator"></div>
+
+
+                        <div>Security</div>
+
+                        <div class="entry input">
+                            <div class="title">Password</div>
+                            <a href="/account/password"><div class="edit"><i class="fa fa-pencil"></i></div></a>
+                            <div class="value">****</div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col l6 m12">
+                <h3>Ethereum Address Details</h3>
+                <div class="settings_content_block">
+                    <div class="settings_content_block_inner">
+
+                        <div class="entry">
+                            <div class="title">My Ethereum Address</div>
+                            <div class="value ethereum_address">{{ ethereum_address }}</div>
+                            <div class="title">Balance</div>
+                            <div class="value balance">
+                                <span class="account_balance">{{ hong_balance }} Ħ</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block body_footerscript_content %}
+
+<script type="text/javascript">
+$(".edit_username").click(function(){
+    alert("Sorry, you cannot edit your username.");
+});
+$(".edit_email").leanModal({
+    dismissible: true, // Modal can be dismissed by clicking outside of the modal
+    opacity: .5, // Opacity of modal background
+    in_duration: 300, // Transition in duration
+    out_duration: 200, // Transition out duration
+    starting_top: '4%', // Starting top style attribute
+    ending_top: '10%' // Ending top style attribute
+});
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+};
+
+
+var is_submitting = false;
+var save_email_address = function(){
+    if(is_submitting){return;}
+    var _emailAddress = $("#email_address_input").val();
+
+    // validate email address
+    if(!validateEmail(_emailAddress)){
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    is_submitting = true;
+    $(".save_email_address").html("Loading...").addClass("button-disabled");
+
+    $.ajax({
+        type: "POST",
+        data: {
+            "email": _emailAddress
+        },
+        url: "/api/account/updateEmail"
+    }).done(function( data ) {
+        if(data.success){
+            $(".save_email_address")
+                .html("Saved successfully. Page refreshing...")
+                .removeClass("orange accent-3")
+                .addClass("green darken-2");
+            location.reload();
+        }else{
+            $('#edit_email').closeModal();
+            alert("We cannot update the email address yet. Please try again later.");
+        }
+    });
+};
+
+$(".save_email_address").click(function(){
+    save_email_address();
+});
+
+
+
+</script>
+{% endblock %}
+

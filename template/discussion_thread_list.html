@@ -1,0 +1,103 @@
+
+{% extends "site_template.html" %}
+
+
+
+
+{% block body_content %}
+
+<style type="text/css">
+
+</style>
+
+
+<div class="container discussion_page">
+
+    <div class="link_navigation">
+        <a href="/discussion/">All Categories</a>
+    </div>
+
+    <div style="text-align:center;">
+
+        <div class="thread_category_title">
+
+            <div class="circle-icon pull-left" style="color: #fff;background-color: {{ category.icon_color }}; ">
+                <i class="fa {{ category.fa_icon }}"></i>
+            </div>
+            <div class="thread_category_title_text pull-left">{{ category.name }}</div>
+
+            <div style="float:right;">
+                <a class="btn thread_action_btn create_new_post_button" href="./new">
+                    New Post
+                </a>
+            </div>
+        </div>
+        <div>
+
+
+<div class="category-list item-list">
+    <div class="panel panel-default list-panel">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                Recent Discussion
+            </div>
+        </div>
+
+        <ul class="list-group">
+            {% for thread in forum_thread_result %}
+            <li class="list-group-item row clearfix {% if thread.is_pinned %}is_pinned{%endif%}">
+                <div class="col m7 category-intro">
+
+                    {% if thread.is_pinned %}
+                    <div class="pull-left pin_div" title="Pinned">
+                        <i class="fa fa-thumb-tack fa-rotate-90"></i>
+                    </div>
+                    {%endif%}
+                    <div class="category-title item-title">
+                        <a href="/discussion/{{ category.category_slug }}/{{ thread.id }}">
+                            {{ thread.title }}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col m1 hidden-sm hidden-xs text-center category-post-count">
+                    <span class="lead">
+                        {{ thread.post_count }}
+                    </span>
+                    <span class="text-muted">
+                        Post{{ thread.post_count|pluralize }}
+                    </span>
+                </div>
+
+                <div class="col m4 category-last-post">
+                    <a class="last-post-author" href="/profile/{{ category.latest_post_detail.username }}">
+                        <strong>{{ category.latest_post_detail.username }}</strong>
+                    </a>
+                    <span class="last-post-time">{{ thread.post_datetime_formatted }} +00:00 by <strong>{{ thread.username }}</strong></span>
+                </div>
+
+            </li>
+            {% endfor %}
+        </ul>
+
+
+    </div>
+
+<!-- http://natika.windwalker.io/ -->
+
+</div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block body_footerscript_content %}
+
+
+{% endblock %}
+

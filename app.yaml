@@ -1,0 +1,47 @@
+# application: hongcoin-th
+application: hongcoin-th-dev
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /style
+  static_dir: style
+
+- url: /script
+  static_dir: script
+
+- url: /images
+  static_dir: images
+
+- url: /static
+  static_dir: static
+
+- url: /api/.*
+  script: api.app
+
+- url: /
+  script: discussion.app
+
+- url: /discussion/.*
+  script: discussion.app
+
+- url: /account/.*
+  script: account.app
+
+- url: .*
+  script: main.app
+
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
+
+- name: MySQLdb
+  version: "latest"
