@@ -102,6 +102,7 @@ LEFT JOIN (
     AND cat_info.cat_id = post_info.category_id
 LEFT JOIN user u
     ON u.id = post_info.author_id
+ORDER BY cat_info.rank
 ;
 """)
 
