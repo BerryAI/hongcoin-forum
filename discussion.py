@@ -24,6 +24,7 @@ from forum_utils import query_posts
 from global_utils import BaseHandler
 from global_utils import init_db
 from global_utils import is_development_env
+from global_utils import is_staging_env
 
 from config import CONFIG
 
@@ -143,6 +144,8 @@ LEFT JOIN user u
             "is_logged_in": (username and username != ""),
             "username": username,
             "forum_category_result": forum_category_result,
+            "is_development_env": is_development_env(),
+            "is_staging_env": is_staging_env(),
         }
         path = os.path.join(os.path.dirname(__file__), 'template/discussion_home.html')
         self.response.write(template.render(path, template_values))
@@ -235,6 +238,8 @@ ORDER BY t.is_pinned DESC, x.datetime DESC;
             "username": username,
             "category": category,
             "forum_thread_result": forum_thread_result,
+            "is_development_env": is_development_env(),
+            "is_staging_env": is_staging_env(),
         }
         path = os.path.join(os.path.dirname(__file__), 'template/discussion_thread_list.html')
         self.response.write(template.render(path, template_values))
@@ -270,6 +275,8 @@ class CreateNewThreadHandler(BaseHandler):
             "is_logged_in": (username and username != ""),
             "username": username,
             "category": category,
+            "is_development_env": is_development_env(),
+            "is_staging_env": is_staging_env(),
         }
 
         path = os.path.join(os.path.dirname(__file__), 'template/discussion_create_thread.html')
@@ -320,6 +327,8 @@ class DiscussionPostsHandler(BaseHandler):
             "category": category,
             "thread": thread,
             "posts": posts,
+            "is_development_env": is_development_env(),
+            "is_staging_env": is_staging_env(),
         }
         path = os.path.join(os.path.dirname(__file__), 'template/discussion_thread_post.html')
         self.response.write(template.render(path, template_values))

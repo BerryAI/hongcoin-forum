@@ -6,6 +6,7 @@ import webapp2
 from webapp2_extras import sessions
 
 from config import _db_config
+from config import DEV_APP_ID
 
 
 def init_db():
@@ -37,6 +38,12 @@ def is_development_env():
         return False
     else:
         return True
+
+def is_staging_env():
+    if os.environ["APPLICATION_ID"] == DEV_APP_ID:
+        return True
+    else:
+        return False
 
 
 class BaseHandler(webapp2.RequestHandler):

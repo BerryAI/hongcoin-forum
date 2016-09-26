@@ -16,7 +16,7 @@ CONFIG['webapp2_extras.sessions'] = {
 MYSQL_DB_CONFIG_APP_ENGINE = {
     'unix_socket': '',
     'unix_user': 'root',
-    'unix_password': None,
+    'unix_password': '',
     'host': '127.0.0.1',
     'port': 3306,
     'user': 'root',
@@ -28,7 +28,7 @@ MYSQL_DB_CONFIG_APP_ENGINE = {
 MYSQL_DB_CONFIG_LOCALHOST = {
     'unix_socket': '',
     'unix_user': 'root',
-    'unix_password': None,
+    'unix_password': '',
     'host': '127.0.0.1',
     'port': 3306,
     'user': 'root',
@@ -38,11 +38,18 @@ MYSQL_DB_CONFIG_LOCALHOST = {
 }
 
 
+DEV_APP_ID = "s~xxxx"
+
+
+def _is_staging_env():
+    if os.environ["APPLICATION_ID"] == DEV_APP_ID:
+        return True
+
 
 if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
     _db_config = MYSQL_DB_CONFIG_APP_ENGINE
-    if os.environ["APPLICATION_ID"] == "s~hongcoin-th-dev":
-        logging.info("Using localhost config")
+    if _is_staging_env():
+        logging.info("Using localhost config for staging environment")
         _db_config = MYSQL_DB_CONFIG_LOCALHOST
 
 else:

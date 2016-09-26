@@ -47,6 +47,12 @@
                         <div class="headline_text">Forum</div>
                     </div>
 
+                    {% if is_staging_env or is_development_env %}
+                    <div style="background-color:#ff5722;color:#fff;font-size:0.8em;padding:2px 4px;display:inline-block;vertical-align: bottom;margin-bottom: 4px;border-radius: 2px;">
+                    Testing site - {% if is_staging_env %} Staging {% endif %}{% if is_development_env %} Development{% endif %}
+                    </div>
+                    {% endif %}
+
                 </li>
             </ul>
 
