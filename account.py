@@ -79,6 +79,8 @@ class AccountEditPasswordHandler(BaseHandler):
             "email_address": email_address,
             "username": username,
             "hongcoin_editpw_error": self.session.get('hongcoin_editpw_error', ''),
+            "is_development_env": is_development_env(),
+            "is_staging_env": is_staging_env(),
         }
         self.session['hongcoin_editpw_error'] = ""
         path = os.path.join(os.path.dirname(__file__), 'template/account_edit_password.html')
