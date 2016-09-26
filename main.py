@@ -23,6 +23,7 @@ from decorator import log_optional_params
 from global_utils import BaseHandler
 from global_utils import init_db
 from global_utils import is_development_env
+from global_utils import is_staging_env
 
 from config import CONFIG
 
@@ -34,7 +35,9 @@ class SignupHandler(BaseHandler):
             "error_message": self.session.get('hongcoin_signup_error', ''),
             "form_wallet": self.session.get('hongcoin_signup_wallet', ''),
             "form_email": self.session.get('hongcoin_signup_email', ''),
-            "form_username": self.session.get('hongcoin_signup_username', '')
+            "form_username": self.session.get('hongcoin_signup_username', ''),
+            "is_development_env": is_development_env(),
+            "is_staging_env": is_staging_env(),
         }
         path = os.path.join(os.path.dirname(__file__), 'template/signup.html')
         self.response.write(template.render(path, template_values))
@@ -157,7 +160,9 @@ class SigninHandler(BaseHandler):
 
         template_values = {
             "continue_path": self.request.get("continue", ""),
-            "login_status": login_status
+            "login_status": login_status,
+            "is_development_env": is_development_env(),
+            "is_staging_env": is_staging_env(),
         }
         path = os.path.join(os.path.dirname(__file__), 'template/signin.html')
         self.response.write(template.render(path, template_values))

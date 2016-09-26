@@ -22,6 +22,7 @@ from blockchain_utils import find_wallet_balance
 from global_utils import BaseHandler
 from global_utils import init_db
 from global_utils import is_development_env
+from global_utils import is_staging_env
 
 from config import CONFIG
 
@@ -49,6 +50,8 @@ class AccountHomeHandler(BaseHandler):
             "email_address": email_address,
             "username": username,
             "hongcoin_update_status": self.session.get('hongcoin_update_status', ''),
+            "is_development_env": is_development_env(),
+            "is_staging_env": is_staging_env(),
         }
         self.session['hongcoin_update_status'] = ""
         path = os.path.join(os.path.dirname(__file__), 'template/account_home.html')
@@ -76,6 +79,8 @@ class AccountEditPasswordHandler(BaseHandler):
             "email_address": email_address,
             "username": username,
             "hongcoin_editpw_error": self.session.get('hongcoin_editpw_error', ''),
+            "is_development_env": is_development_env(),
+            "is_staging_env": is_staging_env(),
         }
         self.session['hongcoin_editpw_error'] = ""
         path = os.path.join(os.path.dirname(__file__), 'template/account_edit_password.html')
