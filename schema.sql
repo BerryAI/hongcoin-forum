@@ -18,7 +18,7 @@ CREATE TABLE `user_address` (
 CREATE TABLE `category` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
-  `category_slug` VARCHAR(45) NULL
+  `category_slug` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
   `rank` INT NULL,
   `is_public` TINYINT NULL,
